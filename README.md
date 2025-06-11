@@ -39,6 +39,13 @@ Tidy up the tests:
   - Test suites for integration/a11y/device testing should be quick to create by reusing the established models
 - Move static page content into static JSON files
 
+# Observations
+- The "Personal Statement" box is resizeable, despite comfortably holding more than 100 characters. 
+- The name field appears to have no maximum character limit
+- The name field is not marked as mandatory
+- Resizing the viewport begins to cover elements before the text wraps
+- The non-text elements don't resize with the viewport
+
 # Installing and Running the Tests
 ## Installing Playwright
 ``` 
