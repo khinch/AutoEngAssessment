@@ -1,5 +1,4 @@
 import { test, expect } from "playwright/test";
-import { page as mainPage } from "../../../locators/mainPage";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -144,7 +143,7 @@ test.describe("Experience Slider Tests", () => {
       name: "How many years of automation",
     });
 
-    await slider.evaluate(element => element.setAttribute('max', '11'));
+    await slider.evaluate((element) => element.setAttribute("max", "11"));
     await slider.fill("11");
 
     expect(logs.length).toBe(0);
@@ -156,14 +155,33 @@ test.describe("Experience Slider Tests", () => {
     // expect(logs.includes(`Years Experience: 11`)).toBeFalsy();
     // expect(
     //   page.getByText("How many years of automation experience do you have? (11)")
-    // ).not.toBeVisible();    
+    // ).not.toBeVisible();
 
-    // TODO: 
-    // The assertions above correctly fail, but if both of the strings change, they 
-    // will incorrectly fail. They should both be moved to a central storage of 
+    // TODO:
+    // The assertions above correctly fail, but if both of the strings change, they
+    // will incorrectly fail. They should both be moved to a central storage of
     // content to be re-used - this will ensure that expecting things to be NOT visible
-    // or NOT appear in the logs will be reliable. 
+    // or NOT appear in the logs will be reliable.
   });
+});
 
-  
+test.describe("CV Upload Tests", () => {
+  test("Tasks 4.1 and 4.2 - CV Upload label should populate correctly", async ({
+    page,
+  }) => {
+    const dir = "playwright/resources/";
+    const filename = "bob.txt";
+
+    const fileChooserPromise = page.waitForEvent("filechooser");
+    await page.getByRole("button", { name: "Please attach your CV:" }).click();
+    const fileChooser = await fileChooserPromise;
+    await fileChooser.setFiles(dir + filename);
+
+    await expect(
+      page.getByRole("button", { name: "Please attach your CV:" })
+    ).toHaveValue(`C:\\fakepath\\${filename}`);
+    await expect(page.locator("form")).toContainText(
+      `Selected file: ${filename}`
+    );
+  });
 });
