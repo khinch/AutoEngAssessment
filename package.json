@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "npx playwright",
+    "test-edit": "npx playwright open http://localhost:5173"
   },
   "dependencies": {
     "react": "^19.0.0",
@@ -17,11 +19,16 @@
     "@eslint/js": "^9.22.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@typescript-eslint/parser": "^8.34.0",
     "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.22.0",
+    "eslint": "^9.28.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "playwright": "^1.53.0",
+    "playwright-test": "^14.1.9",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3",
     "vite": "^6.3.1"
   }
 }
