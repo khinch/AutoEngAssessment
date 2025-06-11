@@ -66,6 +66,31 @@ npm run test-edit
 Opens Playwright GUI for using the test recorder and object inspector.
 
 # Future Work
+## Additional Tests
+### All fields
+- Some form of content validation should take place to verify the copy is as expected, ideally against a content service or content file provided by BA, PO or UX, as appropriate. 
+### Name field
+- Test special characters don't crash the application or cause errors in the logs, and are successfully dispatched
+- Test multiple clearings and re-populations continue to behave as expected regarding the modal and form submission
+- Verify it can be cleared
+### Radio buttons
+- Test multiple toggles back and forth update the component and are correctly represented in form submission
+- Verify each is deselected as the counterpart is selected to ensure they are associated
+- Verify the labels match the component value and form submission value
+### Experience Slider
+- Use click/drag to set the slider and assert the value
+- Set the value programatically and verify the slider moves (perhaps visual test)
+- Verify it can be set multiple times
+### CV Selector
+- Verify selected file can be changed after selection
+- Check a variety of file types. It probably shouldn't allow potentially dangerous files. 
+- Rename an `.exe` as `.doc` and test if it is accepted.
+### Personal Statement field
+- Test special characters don't crash the application or cause errors in the logs, and are successfully dispatched
+- Verify it can be cleared
+### Task Completed checkbox
+- Verify the correct value is dispatched on submit
+
 ## Accessibility Considerations
 Idiomatic Playwright suggests the use of `getByRole`, where possible, to ensure compatibility with accessibility guidelines, and for ease of test creation with help from the Playwright GUI. This may not be appropriate for all applications, and should be considered for the application under test. For example, a button labelled "Submit" could easily be changed to "Continue" or "Next" and still make sense to a user, but all tests using that element would fail. It may make sense to create a dedicated accessibilty suite which exclusively uses aria elements, and visual elements of the page, to ensure visual continuity. This suite should also use Axe tools to scan the page. This would mean visual elements are checked and accessibility has automation coverage, but the functional suite would still continue provided the `data-testid` style tags are maintained. 
 
