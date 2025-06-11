@@ -5,8 +5,6 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe("Name Field Tests", () => {
-  // var mainpage = mainPage(page);
-
   test("Task 1.1 - Valid name is output to logs on form submission", async ({
     page,
   }) => {
@@ -34,18 +32,19 @@ test.describe("Name Field Tests", () => {
   test("Task 1.2 - Empty name field displays error modal", async ({ page }) => {
     // TODO: Move these constants into JSON content files
     const modalHeadingText = "Validation Error";
-    const errorMessage = "Name field is required.";
+    const errorMessageText = "Name field is required.";
+
+    let modalHeading = page.getByText(modalHeadingText);
+    let errorMessage = page.getByText(errorMessageText);
 
     await page.getByRole("button", { name: "Submit Application" }).click();
-    await page.getByRole("heading", { name: modalHeadingText }).waitFor();
-    await expect(page.getByText(modalHeadingText)).toBeVisible();
-    await expect(page.getByText(errorMessage)).toBeVisible();
+    await modalHeading.waitFor();
+    await expect(modalHeading).toBeVisible();
+    await expect(errorMessage).toBeVisible();
     await page.getByRole("button", { name: "Close" }).click();
-    await expect(
-      page.getByRole("heading", { name: modalHeadingText })
-    ).not.toBeVisible();
+    await expect(modalHeading).not.toBeVisible();
     await expect(page.getByText(modalHeadingText)).not.toBeVisible();
-    await expect(page.getByText(errorMessage)).not.toBeVisible();
+    await expect(errorMessage).not.toBeVisible();
 
     // TODO: Check logs for appropriate debug messages
   });
@@ -73,9 +72,6 @@ test.describe("Radio Button Tests", () => {
         await page.getByRole("button", { name: "Submit Application" }).click();
         expect(logs.length).toBeGreaterThan(0);
 
-        // TODO:
-        // This is a bit hacky. Improve the locator so that the buttonValues don't
-        // have to match the form labels. Could probably use CSS Selectors.
         expect(
           logs.includes(`Automation Used: ${buttonValue.toLowerCase()}`)
         ).toBeTruthy();
@@ -111,8 +107,6 @@ test.describe("Experience Slider Tests", () => {
         expect(logs.length).toBeGreaterThan(0);
         expect(logs.includes(`Years Experience: ${sliderValue}`)).toBeTruthy();
 
-        // TODO:
-        // Tidy up this
         const automationPrefix =
           "How many years of automation experience do you have?";
         let expectedSliderValue =
