@@ -23,6 +23,7 @@ The application will be available at the URL provided in the terminal output.
 Please refer to the `Instructions.docx` file located in the `questionPaper` directory for detailed instructions on completing the assessment.
 
 # Implementation Approach ...
+To ensure maximum value for the time available, the chosen approach was the "make it work, make it right, make it fast" paradigm. At this point, they do work,but adding any more tests would begin to become cumbersome without first performing some refactoring and making the tests more readable, maintainable and robust. Currently, they meet the requirements for the current state of the application. 
 
 ## Make it work
 Make all the tests work as expected with correct and valid assertions. 
@@ -31,7 +32,7 @@ Make all the tests work as expected with correct and valid assertions.
 Tidy up the tests:
 - Refactor repeatable sections into more re-usable patterns
 - Use idiomatic Playwright structure and approach
-- Improve locators to be m
+- Improve locators to be more re-usable across multiple tests
 
 ## Make it fast
 - Refactor to make the test structure easier to expand:
