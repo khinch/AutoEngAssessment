@@ -4,8 +4,6 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
-// let mainpage = mainPage({ page });
-
 test.describe("Name Field Tests", () => {
   // var mainpage = mainPage(page);
 
@@ -242,5 +240,25 @@ test.describe("Personal Statement Tests", () => {
     // Raise bug: maxLength is not sufficient validation
     // await expect(counter).toContainText("100 / 100");
     // expect(textbox).toHaveValue(text);
+  });
+});
+
+test.describe("Completed Task Checkbox Tests", () => {
+  test("Task 6.1 - Checkbox should correctly toggle value as it is clicked", async ({
+    page,
+  }) => {
+    let checkbox = page.getByRole("checkbox", { name: "Completed the task" });
+
+    await expect(checkbox).not.toBeChecked();
+    await checkbox.check();
+    await expect(checkbox).toBeChecked();
+    await checkbox.uncheck();
+    await expect(checkbox).not.toBeChecked();
+
+    await expect(checkbox).not.toBeChecked();
+    await checkbox.click();
+    await expect(checkbox).toBeChecked();
+    await checkbox.click();
+    await expect(checkbox).not.toBeChecked();
   });
 });
