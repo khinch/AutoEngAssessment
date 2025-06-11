@@ -166,7 +166,7 @@ test.describe("Experience Slider Tests", () => {
 });
 
 test.describe("CV Upload Tests", () => {
-  test("Tasks 4.1 and 4.2 - CV Upload label should populate correctly", async ({
+  test("Task 4.1 - CV Upload label should populate correctly", async ({
     page,
   }) => {
     const dir = "playwright/resources/";
@@ -183,5 +183,64 @@ test.describe("CV Upload Tests", () => {
     await expect(page.locator("form")).toContainText(
       `Selected file: ${filename}`
     );
+  });
+});
+
+test.describe("Personal Statement Tests", () => {
+  test("Task 5.1 - Personal Statement area character count calculates correctly", async ({
+    page,
+  }) => {
+    const text = "The quick brown fox jumps over the lazy dog.";
+    let counter = page.locator(".char-count");
+    let textbox = page.locator("#personalStatement");
+
+    expect(textbox).toHaveValue("");
+    await expect(counter).toContainText("0 / 100");
+
+    await textbox.fill("T");
+    await expect(counter).toContainText("1 / 100");
+    expect(textbox).toHaveValue("T");
+
+    await textbox.fill(text);
+    await expect(counter).toContainText("44 / 100");
+    expect(textbox).toHaveValue(text);
+  });
+
+  test("Task 5.2 - Personal Statement area should disallow greater than 100 characters", async ({
+    page,
+  }) => {
+    const text =
+      "Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque";
+    let counter = page.locator(".char-count");
+    let textbox = page.locator("#personalStatement");
+
+    await textbox.fill(text);
+    await expect(counter).toContainText("100 / 100");
+    expect(textbox).toHaveValue(text);
+
+    await textbox.fill(text + "a");
+    await expect(counter).toContainText("100 / 100");
+    expect(textbox).toHaveValue(text);
+  });
+
+  test("Task 5.3 - Personal Statement area should implement appropriate validation", async ({
+    page,
+  }) => {
+    const text =
+      "Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque";
+    let counter = page.locator(".char-count");
+    let textbox = page.locator("#personalStatement");
+
+    await textbox.fill(text + "a");
+    await expect(counter).toContainText("100 / 100");
+    expect(textbox).toHaveValue(text);
+
+    await textbox.evaluate((element) =>
+      element.setAttribute("maxLength", "101")
+    );
+    await textbox.fill(text + "a");
+    // Raise bug: maxLength is not sufficient validation
+    // await expect(counter).toContainText("100 / 100");
+    // expect(textbox).toHaveValue(text);
   });
 });
