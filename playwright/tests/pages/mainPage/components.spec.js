@@ -126,10 +126,12 @@ test.describe("Experience Slider Tests", () => {
     expect(logs.length).toBeGreaterThan(0);
 
     // The following fails: raise bug that validation should not happen in elements
-    // expect(logs.includes(`Years Experience: 11`)).toBeFalsy();
-    // expect(
-    //   page.getByText("How many years of automation experience do you have? (11)")
-    // ).not.toBeVisible();
+    expect(logs.includes(`Years Experience: 11`)).toBeFalsy();
+    expect(
+      page.getByText(
+        "How many years of automation experience do you have? (11)"
+      )
+    ).not.toBeVisible();
 
     // TODO:
     // The assertions above correctly fail, but if both of the strings change, they
@@ -214,8 +216,8 @@ test.describe("Personal Statement Tests", () => {
     );
     await textbox.fill(text + "a");
     // Raise bug: maxLength is not sufficient validation
-    // await expect(counter).toContainText("100 / 100");
-    // expect(textbox).toHaveValue(text);
+    await expect(counter).toContainText("100 / 100");
+    expect(textbox).toHaveValue(text);
   });
 });
 
