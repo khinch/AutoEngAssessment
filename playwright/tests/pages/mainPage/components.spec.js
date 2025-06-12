@@ -54,19 +54,14 @@ test.describe("Radio Button Tests", () => {
       "Tasks 2.1 and 2.2 - Radio button should log correctly: value " +
         buttonValue,
       async ({ page }) => {
-        const logs = [];
-        page.on("console", (msg) => {
-          logs.push(msg.text());
-        });
-        expect(logs.length).toBe(0);
+        const mainPage = new MainPage(page);
+        const logs = PlaywrightUtils.watchConsoleLogs(page);
 
-        await page
-          .getByRole("textbox", { name: "Name:" })
-          .fill(`${buttonValue}`);
+        await mainPage.fillName(buttonValue);
         await page.getByRole("radio", { name: buttonValue }).check();
         expect(logs.length).toBe(0);
 
-        await page.getByRole("button", { name: "Submit Application" }).click();
+        await mainPage.clickSumbit();
         expect(logs.length).toBeGreaterThan(0);
 
         expect(
@@ -84,15 +79,10 @@ test.describe("Experience Slider Tests", () => {
       "Tasks 3.1, 3.2 and 3.3 - Experience slider should log correctly: value " +
         sliderValue,
       async ({ page }) => {
-        const logs = [];
-        page.on("console", (msg) => {
-          logs.push(msg.text());
-        });
-        expect(logs.length).toBe(0);
+        const mainPage = new MainPage(page);
+        const logs = PlaywrightUtils.watchConsoleLogs(page);
 
-        await page
-          .getByRole("textbox", { name: "Name:" })
-          .fill(`${sliderValue}`);
+        await mainPage.fillName(`${sliderValue}`);
 
         await page
           .getByRole("slider", { name: "How many years of automation" })
@@ -100,7 +90,7 @@ test.describe("Experience Slider Tests", () => {
 
         expect(logs.length).toBe(0);
 
-        await page.getByRole("button", { name: "Submit Application" }).click();
+        await mainPage.clickSumbit();
         expect(logs.length).toBeGreaterThan(0);
         expect(logs.includes(`Years Experience: ${sliderValue}`)).toBeTruthy();
 
@@ -118,15 +108,10 @@ test.describe("Experience Slider Tests", () => {
   test("Task 3.4 - Slider shouldn't allow values larger than 10", async ({
     page,
   }) => {
-    const logs = [];
-    page.on("console", (msg) => {
-      logs.push(msg.text());
-    });
-    expect(logs.length).toBe(0);
+    const mainPage = new MainPage(page);
+    const logs = PlaywrightUtils.watchConsoleLogs(page);
 
-    await page
-      .getByRole("textbox", { name: "Name:" })
-      .fill("These amps go to 11");
+    await mainPage.fillName("These amps go to 11");
 
     let slider = page.getByRole("slider", {
       name: "How many years of automation",
@@ -137,7 +122,7 @@ test.describe("Experience Slider Tests", () => {
 
     expect(logs.length).toBe(0);
 
-    await page.getByRole("button", { name: "Submit Application" }).click();
+    await mainPage.clickSumbit();
     expect(logs.length).toBeGreaterThan(0);
 
     // The following fails: raise bug that validation should not happen in elements
