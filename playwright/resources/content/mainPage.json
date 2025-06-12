@@ -1,0 +1,16 @@
+{
+    "labels": {
+        "pageHeader": "Automation Experience Form",
+        "nameField": "Name:", 
+        "automationUsed": "Have you used automation tools in a real setting?",
+        "radioButton": {
+            "yes": "Yes",
+            "no": "No"
+        },
+        "automationExperience": "How many years of automation experience do you have?",
+        "cvUpload": "Please attach your CV:",
+        "personalStatement": "Personal Statement (max 100 chars):", 
+        "taskCompleted": "Completed the task",
+        "submitButton": "Submit Application"
+    }
+}

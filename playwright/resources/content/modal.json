@@ -1,0 +1,13 @@
+{
+    "labels": {
+        "successMessage": "Simulated form submission successful!",
+        "okButton": "OK"
+    },
+    "errors": {
+        "validation": {
+            "title": "Validation Error",
+            "nameFieldMissing": "Name field is required.", 
+            "closeButton": "Close"
+        }
+    }
+}

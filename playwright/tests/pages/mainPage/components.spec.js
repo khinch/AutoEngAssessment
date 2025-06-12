@@ -1,50 +1,47 @@
 import { test, expect } from "playwright/test";
+import MainPage from "../../../model/mainPage";
+import Modal from "../../../model/modal";
+import PlaywrightUtils from "../../../utils/playwrightUtils";
+
+import pageContent from "../../../resources/content/mainPage.json" with { type: "json" };
+import modalContent from "../../../resources/content/modal.json" with { type: "json" };
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("/");
+  const mainPage = new MainPage(page);
+  await mainPage.navigateToPage();
 });
 
 test.describe("Name Field Tests", () => {
   test("Task 1.1 - Valid name is output to logs on form submission", async ({
     page,
   }) => {
+    const mainPage = new MainPage(page);
+    const logs = PlaywrightUtils.watchConsoleLogs(page);
+
     let name = "Mortimer Fastwind";
-    await page.getByRole("textbox", { name: "Name:" }).fill(name);
-
-    // TODO Move log parser in the utils
-    const logs = [];
-    page.on("console", (msg) => {
-      logs.push(msg.text());
-    });
-
+    await mainPage.fillName(name);
     expect(logs.length).toBe(0);
-    await page.getByRole("button", { name: "Submit Application" }).click();
+
+    await mainPage.clickSumbit();
     expect(logs.length).toBeGreaterThan(0);
-
-    // TODO:
-    // Improve the follow assertion: should loop through for the expected prefix and
-    // check the string vs expected: clearer to debug if it fails and just better in general
     expect(logs.includes(`Name: ${name}`)).toBeTruthy();
-
-    // TODO: verify success modal appears
   });
 
   test("Task 1.2 - Empty name field displays error modal", async ({ page }) => {
-    // TODO: Move these constants into JSON content files
-    const modalHeadingText = "Validation Error";
-    const errorMessageText = "Name field is required.";
+    const mainPage = new MainPage(page);
+    const modal = new Modal(page);
 
-    let modalHeading = page.getByText(modalHeadingText);
-    let errorMessage = page.getByText(errorMessageText);
+    const modalHeadingText = modalContent.errors.validation.title;
+    const errorMessageText = modalContent.errors.validation.nameFieldMissing;
 
-    await page.getByRole("button", { name: "Submit Application" }).click();
-    await modalHeading.waitFor();
-    await expect(modalHeading).toBeVisible();
-    await expect(errorMessage).toBeVisible();
-    await page.getByRole("button", { name: "Close" }).click();
-    await expect(modalHeading).not.toBeVisible();
-    await expect(page.getByText(modalHeadingText)).not.toBeVisible();
-    await expect(errorMessage).not.toBeVisible();
+    await mainPage.clickSumbit();
+    await modal.waitFor();
+    modal.assertIsVisible(false);
+    await modal.assertHeaderText(modalHeadingText);
+    await modal.assertMessageText(errorMessageText);
+
+    await modal.close();
+    modal.assertIsVisible(false);
 
     // TODO: Check logs for appropriate debug messages
   });
@@ -161,7 +158,7 @@ test.describe("CV Upload Tests", () => {
   test("Task 4.1 - CV Upload label should populate correctly", async ({
     page,
   }) => {
-    const dir = "playwright/resources/";
+    const dir = "playwright/resources/files/";
     const filename = "bob.txt";
 
     const fileChooserPromise = page.waitForEvent("filechooser");
